@@ -1,5 +1,6 @@
 import Signature from '../models/Signature';
 
+type incomingData = { id?: number, name: string, cost: number, dueDate: Date, imageURL: string };
 class SignatureService {
     async findAll() {
       const signatures = await Signature.findAll();
@@ -14,21 +15,29 @@ class SignatureService {
       return signature;
     }
 
-    async create(data: { name: string, cost: number, dueDate: Date, imageURL: string }) {
+    async create(data: incomingData) {
       const signature = Signature.build(data);
       await signature.save();
       return signature;
     }
 
-    async update(data: { name: string, cost: number, dueDate: Date, imageURL: string }) {
-      const signature = await Signature.update(data, { where: { name: data.name, } });
+    async update(data: incomingData) {
+      const signature = await Signature.update(data, { where: { id: data.id, } });
       return signature;
     }
 
-    async destroy(name: string) {
+    async save(data: incomingData) {
+      if (data.id) {
+        return await this.update(data);
+      }
+
+      return await this.create(data);
+    }
+
+    async destroy(id: number) {
       await Signature.destroy({
         where: { 
-          name
+          id
         }
       });
     }

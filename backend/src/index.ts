@@ -1,5 +1,6 @@
 import fastify from 'fastify';
 import signature from './signature';
+import fastifyCors from 'fastify-cors';
 import { Sequelize } from 'sequelize';
 import { init as signatureInit } from './models/Signature';
 
@@ -15,6 +16,7 @@ const server = fastify({
 
 server.get('/ping', async (_, __) => 'pong\n')
 
+server.register(fastifyCors);
 server.register(signature);
 
 server.listen(3000, (err, address) => {

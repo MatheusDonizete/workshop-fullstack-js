@@ -6,6 +6,7 @@ async function routes (fastify: any) {
       body: {
         type: 'object',
         properties: {
+          id: { type: 'number' },
           name: { type: 'string' },
           cost: { type: 'number' },
           dueDate: { type: 'string' },
@@ -23,9 +24,21 @@ async function routes (fastify: any) {
   fastify.post('/signatures', opts, async (request: any) => {
     const { body } = request;
     body.dueDate = new Date(body.dueDate);
-    const signature = await SignatureService.create(request.body);
+    const signature = await SignatureService.save(request.body);
     return signature;
   });
+
+  fastify.put('/signatures/:signature', opts, async (request: any) => {
+    const id = request.params.signature;
+    const signature = await SignatureService.save({ ...request.body, id });
+
+    return signature;
+  });
+
+  fastify.delete('/signatures/:signature', async (request: any) => {
+    await SignatureService.destroy(request.params.signature);
+    return true;
+  })
 }
 
 export default routes;

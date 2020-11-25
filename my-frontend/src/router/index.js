@@ -7,9 +7,21 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import(/* webpackChunkName: "group-foo" */ '@/components/HelloWorld.vue')
+      component: () => import(/* webpackChunkName: "hello-world" */ '@/components/HelloWorld.vue'),
     },
-  ]
+    {
+      path: '/about',
+      component: () => import(/* webpackChunkName: "hello-world" */ '@/pages/About.vue'),
+    },
+    {
+      path: '/signature/list',
+      component: () => import(/* webpackChunkName: "signature" */ '@/pages/Signature/List.vue'),
+    },
+    {
+      path: '/signature/register',
+      component: () => import(/* webpackChunkName: "signature" */ '@/pages/Signature/Register.vue'),
+    },
+  ],
 });
 
 export default router;
